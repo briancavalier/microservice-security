@@ -1,15 +1,12 @@
 var angular = require('angular');
 
 angular.module('hello',[])
-	.controller('Hello', function Hello($scope, $http) {
+	.controller('Hello', function ($scope, $http) {
 
-		$http({
-			method: 'GET',
-			url: 'http://localhost:9000/token'
-		}).then(function(token) {
-
+		$http.get('http://localhost:8080/token').then(function(token) {
+			
 			var headers = {
-				'X-Token' : token
+				'X-Token' : token.data
 			};
 
 			return $http({
@@ -18,8 +15,8 @@ angular.module('hello',[])
 				headers : headers
 			});
 
-		}).then(function(data) {
-			$scope.greeting = data;
+		}).then(function(result) {
+			$scope.greeting = result.data;
 		}).catch(function(e) { // TODO: Remove
 			console.error(e);
 		});
